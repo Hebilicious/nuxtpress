@@ -1,6 +1,16 @@
 import type { RuntimeConfig } from "nuxt/schema"
 import type Markdown from "vite-plugin-vue-markdown"
-import Shiki from "markdown-it-shiki"
+
+import shikiPlugin from "markdown-it-shiki"
+import tablePlugin from "markdown-it-multimd-table"
+import anchorPlugin from "markdown-it-anchor"
+import attrsPlugin from "markdown-it-attrs"
+import emojiPlugin from "markdown-it-emoji"
+
+import { highlightLinePlugin } from "./md-it-plugins/highlightLines"
+import { preWrapperPlugin } from "./md-it-plugins/preWrapper"
+import { containerPlugin } from "./md-it-plugins/container"
+import { lineNumberPlugin } from "./md-it-plugins/lineNumberPlugin"
 
 export const NAME = "nuxtpress" as const
 export const configKey = "nuxtPress" as const
@@ -11,12 +21,19 @@ export interface NuxtPressOptions {
 
 export const defaults: NuxtPressOptions = {
   markdownPluginOptions: {
-    wrapperClasses: "markdown",
+    wrapperClasses: "markdown-nuxtpress",
     headEnabled: true,
     include: [/\.md(\?.*)?$/],
     markdownItSetup(md) {
-      // https://prismjs.com/
-      md.use(Shiki)
+      md.use(shikiPlugin)
+      md.use(highlightLinePlugin)
+      md.use(preWrapperPlugin, { hasSingleTheme: true })
+      md.use(containerPlugin, { hasSingleTheme: true })
+      md.use(lineNumberPlugin)
+      md.use(attrsPlugin)
+      md.use(emojiPlugin)
+      md.use(anchorPlugin)
+      md.use(tablePlugin)
     }
   }
 }

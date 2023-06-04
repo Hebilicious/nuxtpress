@@ -1,10 +1,11 @@
-import { addTemplate, addVitePlugin, defineNuxtModule, useLogger } from "@nuxt/kit"
-import { defu } from "defu"
 import Markdown from "vite-plugin-vue-markdown"
+import { addPlugin, addTemplate, addVitePlugin, createResolver, defineNuxtModule, useLogger } from "@nuxt/kit"
+import { defu } from "defu"
 import { NAME, type NuxtPressOptions, configKey, defaults } from "./runtime/utils"
+import { highlight } from "./runtime/md-it-plugins/highlight"
 
-// @todo 1 : Use markdown renderer from vitepress
-// @todo 2 : Support vitepress configuration features
+// @todo 1 : Use custom @md-it vite plugin
+// @todo 2 : Support @mdit-vue/plugin-sfc to extract styles and scripts from md files.
 
 export default defineNuxtModule<NuxtPressOptions>({
   meta: {
@@ -17,6 +18,7 @@ export default defineNuxtModule<NuxtPressOptions>({
   defaults,
   async setup(userOptions, nuxt) {
     const logger = useLogger(NAME)
+    const { resolve } = createResolver(import.meta.url)
 
     logger.info(`Adding ${NAME} module...`)
 
@@ -26,10 +28,18 @@ export default defineNuxtModule<NuxtPressOptions>({
 
     const markdownPluginOptions = defu(
       defaults.markdownPluginOptions,
+      {
+        markdownPluginOptions: {
+          markdownItOptions: {
+            highlight: await highlight("material-theme-lighter")
+          }
+        }
+      },
       userOptions.markdownPluginOptions
     )
 
     // Create Vite Markdown plugin
+
     const markdownPlugin = Markdown(markdownPluginOptions)
     addVitePlugin(markdownPlugin)
 
@@ -56,6 +66,9 @@ export default defineNuxtModule<NuxtPressOptions>({
     nuxt.hook("prepare:types", ({ references }) => {
       references.push({ path: markdownTypes })
     })
+
+    // 5. Add Vue Plugins.
+    addPlugin(resolve("./runtime/plugins/copyCode"))
 
     logger.success(`Added ${NAME} module successfully.`)
   }
