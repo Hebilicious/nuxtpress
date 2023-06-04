@@ -60,7 +60,7 @@ importers:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.1.3)
       typescript:
-        specifier: ^5.1.3
+        specifier: ^5.1.0
         version: 5.1.3
       unbuild:
         specifier: ^1.2.1
@@ -78,7 +78,7 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2(@types/node@18.16.16)(eslint@8.42.0)(rollup@3.23.0)(typescript@5.1.3)
 
-  packages/my-module:
+  packages/nuxtpress:
     dependencies:
       '@nuxt/kit':
         specifier: 3.5.2
