@@ -38,7 +38,7 @@
     "vite": "*"
   },
   "dependencies": {
-    "@nuxt/kit": "3.5.2",
+    "@nuxt/kit": "3.5.3",
     "defu": "^6.1.2",
     "markdown-it-anchor": "^8.6.7",
     "markdown-it-attrs": "^4.1.6",
