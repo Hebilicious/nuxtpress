@@ -10,4 +10,4 @@ jobs:
   inspect:
     runs-on: ubuntu-latest
     steps:
-      - uses: Hebilicious/reproduire@v0.0.4
+      - uses: Hebilicious/reproduire@v0.0.6-mp
