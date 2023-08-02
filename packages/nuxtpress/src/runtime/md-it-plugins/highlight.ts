@@ -37,9 +37,7 @@ const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", 10)
 function attrsToLines(attrs: string): HtmlRendererOptions["lineOptions"] {
   attrs = attrs.replace(/^(?:\[.*?\])?.*?([\d,-]+).*/, "$1").trim()
   const result: number[] = []
-  if (!attrs) {
-    return []
-  }
+  if (!attrs) return []
   attrs
     .split(",")
     .map(v => v.split("-").map(v => Number.parseInt(v, 10)))

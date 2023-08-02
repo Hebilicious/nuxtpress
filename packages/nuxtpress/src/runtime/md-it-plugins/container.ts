@@ -45,9 +45,7 @@ function createContainer(
         const info = token.info.trim().slice(klass.length).trim()
         if (token.nesting === 1) {
           const title = md.renderInline(info || defaultTitle)
-          if (klass === "details") {
-            return `<details class="${klass} custom-block"><summary>${title}</summary>\n`
-          }
+          if (klass === "details") return `<details class="${klass} custom-block"><summary>${title}</summary>\n`
           return `<div class="${klass} custom-block"><p class="custom-block-title">${title}</p>\n`
         }
         else {

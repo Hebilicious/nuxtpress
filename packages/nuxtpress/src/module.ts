@@ -1,13 +1,19 @@
 import Markdown from "vite-plugin-vue-markdown"
-import { addPlugin, addTemplate, addVitePlugin, createResolver, defineNuxtModule, useLogger } from "@nuxt/kit"
+import { addPlugin, addTypeTemplate, addVitePlugin, createResolver, defineNuxtModule, useLogger } from "@nuxt/kit"
 import { defu } from "defu"
-import { NAME, type NuxtPressOptions, configKey, defaults } from "./runtime/utils"
+import { NAME, configKey, defaults } from "./runtime/utils"
 import { highlight } from "./runtime/md-it-plugins/highlight"
 
 // @todo 1 : Use custom @md-it vite plugin
 // @todo 2 : Support @mdit-vue/plugin-sfc to extract styles and scripts from md files.
 
-export default defineNuxtModule<NuxtPressOptions>({
+export interface ModuleOptions {
+  markdownPluginOptions: Parameters<typeof Markdown>[0]
+}
+
+declare module "@nuxt/schema" {}
+
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: NAME,
     configKey,
@@ -27,7 +33,7 @@ export default defineNuxtModule<NuxtPressOptions>({
     if (!nuxt.options.extensions.includes("md")) nuxt.options.extensions.push("md")
 
     const markdownPluginOptions = defu(
-      defaults.markdownPluginOptions,
+      userOptions.markdownPluginOptions,
       {
         markdownPluginOptions: {
           markdownItOptions: {
@@ -35,7 +41,7 @@ export default defineNuxtModule<NuxtPressOptions>({
           }
         }
       },
-      userOptions.markdownPluginOptions
+      defaults.markdownPluginOptions
     )
 
     // Create Vite Markdown plugin
@@ -52,22 +58,19 @@ export default defineNuxtModule<NuxtPressOptions>({
     })
 
     // 4. Add types for Markdown components.
-    const markdownTypes = "types/markdown.d.ts"
 
-    addTemplate({
-      filename: markdownTypes,
-      getContents: () => `
+    addTypeTemplate({
+      filename: "types/markdown.d.ts",
+      write: true,
+      getContents: () => /* ts */`
       declare module '*.md' {
         import type { ComponentOptions } from 'vue'
         const Component: ComponentOptions
         export default Component
       }`
     })
-    nuxt.hook("prepare:types", ({ references }) => {
-      references.push({ path: markdownTypes })
-    })
 
-    // 5. Add Vue Plugins.
+    // 5. Add Nuxt Plugins.
     addPlugin(resolve("./runtime/plugins/copyCode"))
 
     logger.success(`Added ${NAME} module successfully.`)

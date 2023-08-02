@@ -24,9 +24,7 @@ export function highlightLinePlugin(md: MarkdownIt) {
       // markdown-it-attrs maybe disabled
       const rawInfo = token.info
 
-      if (!rawInfo || !RE.test(rawInfo)) {
-        return fence(...args)
-      }
+      if (!rawInfo || !RE.test(rawInfo)) return fence(...args)
 
       const langName = rawInfo.replace(RE, "").trim()
 
@@ -39,9 +37,8 @@ export function highlightLinePlugin(md: MarkdownIt) {
     if (!lines) {
       lines = attr![0]
 
-      if (!lines || !/[\d,-]+/.test(lines)) {
+      if (!lines || !/[\d,-]+/.test(lines))
         return fence(...args)
-      }
     }
 
     token.info += ` ${lines}`

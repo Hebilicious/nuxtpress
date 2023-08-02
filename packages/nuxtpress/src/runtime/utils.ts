@@ -1,5 +1,4 @@
 import type { RuntimeConfig } from "nuxt/schema"
-import type Markdown from "vite-plugin-vue-markdown"
 
 import shikiPlugin from "markdown-it-shiki"
 import tablePlugin from "markdown-it-multimd-table"
@@ -7,6 +6,7 @@ import anchorPlugin from "markdown-it-anchor"
 import attrsPlugin from "markdown-it-attrs"
 import emojiPlugin from "markdown-it-emoji"
 
+import type { ModuleOptions } from "../module"
 import { highlightLinePlugin } from "./md-it-plugins/highlightLines"
 import { preWrapperPlugin } from "./md-it-plugins/preWrapper"
 import { containerPlugin } from "./md-it-plugins/container"
@@ -15,11 +15,7 @@ import { lineNumberPlugin } from "./md-it-plugins/lineNumberPlugin"
 export const NAME = "nuxtpress" as const
 export const configKey = "nuxtPress" as const
 
-export interface NuxtPressOptions {
-  markdownPluginOptions: Parameters<typeof Markdown>[0]
-}
-
-export const defaults: NuxtPressOptions = {
+export const defaults: ModuleOptions = {
   markdownPluginOptions: {
     wrapperClasses: "markdown-nuxtpress",
     headEnabled: true,

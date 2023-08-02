@@ -16,9 +16,7 @@ export function lineNumberPlugin(md: MarkdownIt, enable = false) {
     if (
       (!enable && !/:line-numbers($| )/.test(info))
       || (enable && /:no-line-numbers($| )/.test(info))
-    ) {
-      return rawCode
-    }
+    ) return rawCode
 
     const code = rawCode.slice(
       rawCode.indexOf("<code>"),

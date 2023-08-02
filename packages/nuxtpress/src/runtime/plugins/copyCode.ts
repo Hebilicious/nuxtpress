@@ -40,9 +40,7 @@ function setupCopyCode() {
       const parent = el.parentElement
       const sibling = el.nextElementSibling
         ?.nextElementSibling as HTMLPreElement | null
-      if (!parent || !sibling) {
-        return
-      }
+      if (!parent || !sibling) return
 
       const isShell = /language-(shellscript|shell|bash|sh|zsh)/.test(
         parent.className
@@ -55,9 +53,8 @@ function setupCopyCode() {
         .forEach(node => (text += `${node.textContent || ""}\n`))
       text = text.slice(0, -1)
 
-      if (isShell) {
+      if (isShell)
         text = text.replace(/^ *(\$|>) /gm, "").trim()
-      }
 
       copyToClipboard(text).then(() => {
         el.classList.add("copied")
@@ -93,7 +90,7 @@ async function copyToClipboard(text: string) {
 
     const selection = document.getSelection()
     const originalRange = selection
-      // eslint-disable-next-line no-mixed-operators
+
       ? selection.rangeCount > 0 && selection.getRangeAt(0)
       : null
 
@@ -113,8 +110,7 @@ async function copyToClipboard(text: string) {
     }
 
     // Get the focus back on the previously focused element, if any
-    if (previouslyFocusedElement) {
+    if (previouslyFocusedElement)
       (previouslyFocusedElement as HTMLElement).focus()
-    }
   }
 }
