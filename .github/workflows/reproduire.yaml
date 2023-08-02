@@ -1,0 +1,13 @@
+name: Reproduire
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  issues: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Hebilicious/reproduire@v0.0.3
