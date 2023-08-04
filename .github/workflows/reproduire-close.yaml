@@ -15,6 +15,7 @@ jobs:
           days-before-stale: -1 # Issues and PR will never be flagged stale automatically.
           stale-issue-label: needs-reproduction # Label that flags an issue as stale.
           days-before-issue-close: 7
+          remove-stale-when-updated: false
           stale-issue-message: Action stale will close this issue in 7 days.
           close-issue-message: This issue was closed because it was open for 7 days without a valid reproduction.
           close-issue-label: closed-by-reproduire
